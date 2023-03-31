@@ -1,6 +1,7 @@
 #pragma once
 
 #include <core/assert.hpp>
+#include <core/printer.hpp>
 
 template<typename Type>
 class Columns{
@@ -16,13 +17,17 @@ public:
 		SX_ASSERT(m < m_M);
 		return m_DataPtr[m];
 	}
+
+	size_t M()const {
+		return m_M;
+	}
 };
 
 template<typename Type>
-class Matrix{
+class Matrix: public NonCopyable{
 	Type *m_Data = nullptr;
-	size_t m_N;
-	size_t m_M;
+	size_t m_N = 0;
+	size_t m_M = 0;
 public:
 	Matrix(size_t n, size_t m): 
 		m_N(n), 
@@ -34,8 +39,20 @@ public:
 		m_Data = new Type[m_N * m_M];
 	}
 
+	Matrix(Matrix&& other) {
+		*this = Move(other);
+	}
+
 	~Matrix(){
-		delete[] m_Data;
+		Clear();
+	}
+	Matrix &operator=(Matrix&& other) {
+		Clear();
+		Swap(m_Data, other.m_Data);
+		Swap(m_N, other.m_N);
+		Swap(m_M, other.m_M);
+
+		return *this;
 	}
 
 
@@ -56,5 +73,28 @@ public:
 
 	size_t M()const{
 		return m_M;
+	}
+
+	void Clear() {
+		delete[] m_Data;
+		m_N = 0;
+		m_M = 0;
+	}
+};
+
+template<typename Type>
+struct Printer<Matrix<Type>> {
+	static void Print(const Matrix<Type>& matrix, StringWriter& writer) {
+		for (int n = 0; n < matrix.N(); n++) {
+			Printer<char>::Print('[', writer);
+			for (int m = 0; ; m++) {
+				Printer<Type>::Print(matrix[n][m], writer);
+				if(m == matrix.M() - 1)
+					break;
+				Printer<char>::Print(',', writer);
+			}
+			Printer<char>::Print(']', writer);
+			Printer<char>::Print('\n', writer);
+		}
 	}
 };
