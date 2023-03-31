@@ -26,11 +26,11 @@ struct Layer{
 	bool IsSuitableToBeNext(const Layer &other)const;
 
 	size_t OutputSize()const {
-		return Weights.M();
+		return Weights.N();
 	}
 
 	size_t InputSize()const {
-		return Weights.N();
+		return Weights.M();
 	}
 
 	Neuron GetNeuron(size_t index) {
