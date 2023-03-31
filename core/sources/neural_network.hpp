@@ -24,6 +24,7 @@ struct Neuron {
 struct Layer{
 	Matrix<float> Weights;
 	Function<float(ConstSpan<float>, ConstSpan<float>)> PropagationFunction = &Layer::WeightedSum;
+	Function<float(float)> ActivationFunction = &Layer::Identity;
 
 	Layer(size_t input_size, size_t neurons_count);
 
@@ -50,6 +51,8 @@ struct Layer{
 	List<float> Process(List<float> input);
 
 	static float WeightedSum(ConstSpan<float> inputs, ConstSpan<float> weights);
+
+	static float Identity(float value){ return value; }
 };
 
 class NeuralNetwork{

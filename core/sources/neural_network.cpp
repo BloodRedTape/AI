@@ -21,8 +21,8 @@ List<float> Layer::Process(List<float> input){
 	output.Reserve(Weights.N());
 
 	for (int neuron = 0; neuron < NeuronsCount(); neuron++) {
-		float result = PropagationFunction(input, GetNeuron(neuron).Weights);
-		output.Add(result);
+		float out = ActivationFunction(PropagationFunction(input, GetNeuron(neuron).Weights));
+		output.Add(out);
 	}
 
 	return output;
