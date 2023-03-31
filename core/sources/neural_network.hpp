@@ -2,6 +2,7 @@
 
 
 #include <core/list.hpp>
+#include <core/function.hpp>
 #include "matrix.hpp"
 
 struct Neuron {
@@ -14,10 +15,15 @@ struct Neuron {
 	float &GetWeight(size_t index) {
 		return Weights[index];
 	}
+
+	size_t WeightsCount()const {
+		return Weights.Size();
+	}
 };
 
 struct Layer{
 	Matrix<float> Weights;
+	Function<float(ConstSpan<float>, ConstSpan<float>)> PropagationFunction = &Layer::WeightedSum;
 
 	Layer(size_t input_size, size_t neurons_count);
 
@@ -37,8 +43,13 @@ struct Layer{
 		return Neuron( { &Weights[index][0], Weights[index].M() });
 	}
 
-	List<float> Process(List<float> input)const;
+	size_t NeuronsCount()const {
+		return OutputSize();
+	}
 
+	List<float> Process(List<float> input);
+
+	static float WeightedSum(ConstSpan<float> inputs, ConstSpan<float> weights);
 };
 
 class NeuralNetwork{

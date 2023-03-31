@@ -14,23 +14,28 @@ bool Layer::IsSuitableToBeNext(const Layer& other)const
 	return OutputSize() == other.InputSize();
 }
 
-List<float> Layer::Process(List<float> input)const{
+List<float> Layer::Process(List<float> input){
 	SX_ASSERT(Weights.M() == input.Size());
 
 	List<float> output;
 	output.Reserve(Weights.N());
 
-	for (int i = 0; i < Weights.N(); i++) {
-		float result = 0.f;
-
-		for (int j = 0; j < input.Size(); j++) {
-			result += input[j] * Weights[i][j];
-		}
-
+	for (int neuron = 0; neuron < NeuronsCount(); neuron++) {
+		float result = PropagationFunction(input, GetNeuron(neuron).Weights);
 		output.Add(result);
 	}
 
 	return output;
+}
+
+float Layer::WeightedSum(ConstSpan<float> inputs, ConstSpan<float> weights) {
+	float result = 0.f;
+
+	for (int j = 0; j < inputs.Size(); j++) {
+		result += inputs[j] * weights[j];
+	}
+
+	return result;
 }
 
 NeuralNetwork::NeuralNetwork(std::initializer_list<size_t> configuration){
@@ -45,7 +50,7 @@ NeuralNetwork::NeuralNetwork(std::initializer_list<size_t> configuration){
 }
 
 List<float> NeuralNetwork::Do(List<float> input) {
-	for (const Layer& layer : m_Layers){
+	for (Layer& layer : m_Layers){
 		input = layer.Process(Move(input));
 	}
 
