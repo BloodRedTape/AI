@@ -32,5 +32,9 @@ public:
 		return Size();
 	}
 
-	List<float> Process(List<float> inputs);
+	List<float> Process(ConstSpan<float> inputs);
+
+	bool IsValidInput(ConstSpan<float> inputs)const {
+		return inputs.Size() == InputSize();
+	}
 };

@@ -10,8 +10,8 @@ bool Layer::IsSuitableToBeNext(const Layer& other)const {
 	return OutputSize() == other.InputSize();
 }
 
-List<float> Layer::Process(List<float> inputs) {
-	SX_ASSERT(InputSize() == inputs.Size());
+List<float> Layer::Process(ConstSpan<float> inputs) {
+	SX_ASSERT(IsValidInput(inputs));
 
 	List<float> output;
 	output.Reserve(NeuronsCount());

@@ -21,4 +21,8 @@ public:
 	}
 
 	float PropagateAndActivate(ConstSpan<float> inputs);
+
+	bool IsValidInput(ConstSpan<float> inputs)const{
+		return inputs.Size() == WeightsCount();
+	}
 };

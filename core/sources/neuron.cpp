@@ -12,7 +12,7 @@ Neuron::Neuron(size_t inputs_size) {
 }
 
 float Neuron::PropagateAndActivate(ConstSpan<float> inputs) {
-	SX_ASSERT(inputs.Size() == WeightsCount());
+	SX_ASSERT(IsValidInput(inputs));
 
 	float propagation_result = 0.f;
 
