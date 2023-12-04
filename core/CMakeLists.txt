@@ -6,3 +6,4 @@ add_library(AICore
 
 target_include_directories(AICore PUBLIC "sources")
 target_link_libraries(AICore PUBLIC StraitXBase)
+target_compile_features(AICore PUBLIC cxx_std_17)

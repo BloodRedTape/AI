@@ -1,3 +1,6 @@
 [submodule "libs/base"]
 	path = libs/base
 	url = https://github.com/StraitX/Base
+[submodule "libs/sfpl"]
+	path = libs/sfpl
+	url = https://github.com/BloodRedTape/sfpl

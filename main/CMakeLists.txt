@@ -6,3 +6,4 @@ add_executable(AIMain
 
 target_include_directories(AIMain PUBLIC "sources")
 target_link_libraries(AIMain PUBLIC AICore)
+target_compile_features(AIMain PRIVATE cxx_std_17)
