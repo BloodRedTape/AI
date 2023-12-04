@@ -5,5 +5,5 @@ add_library(AICore
  "sources/neuron.cpp" "sources/layer.cpp")
 
 target_include_directories(AICore PUBLIC "sources")
-target_link_libraries(AICore PUBLIC StraitXBase)
+target_link_libraries(AICore PUBLIC StraitXCore)
 target_compile_features(AICore PUBLIC cxx_std_17)
